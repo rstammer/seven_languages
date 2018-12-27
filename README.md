@@ -8,5 +8,5 @@ our random code notebook.
 
 * Ruby
 * Io
-* Prolog
+* [Prolog](https://github.com/neumanrq/seven_languages/tree/master/prolog)
 * Scala
