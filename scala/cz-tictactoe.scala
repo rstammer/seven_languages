@@ -32,7 +32,7 @@ class Board(val player1: Player, val player2: Player) {
   def printField(): Unit = {
     for(i <- 0 until 3) {
       for(j <- 0 until 3) {
-        print(" " + fields(i)(j) + " ")
+        print(" " + fields(j)(i) + " ")
       }
       println
       println
