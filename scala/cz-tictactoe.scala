@@ -46,13 +46,18 @@ class Board(val player1: Player, val player2: Player) {
 
   def readMove(): Unit = {
     print("Enter X coord: ")
-    val x = scala.io.StdIn.readInt()
+    val x = scala.io.StdIn.readInt() - 1
     print("Enter Y coord: ")
-    val y = scala.io.StdIn.readInt()
-    doMove(x-1 , y-1)
+    val y = scala.io.StdIn.readInt() - 1
+
+    if (fields(x)(y) != N) {
+      println(Console.RED + "Field is already set by '" + fields(x)(y) + "'" + Console.RESET)
+      readMove
+    } else {
+      doMove(x, y)
+    }
   }
 
-  // FIXME: block selected field from being re-assigned
   private def doMove(x: Int, y: Int) {
     fields(x)(y) = playerAtTurn.marker.toString
     moves += 1
