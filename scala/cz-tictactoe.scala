@@ -2,6 +2,39 @@ class Player(val name: String, val marker: Char)
 
 // FIXME: add a `Game` class and stop handling player turns in `Board`
 
+class Game() {
+
+  def start() = {
+    val player1 = getPlayer()
+    val player2 = getPlayer()
+
+    var board = new Board(player1, player2)
+    board.printField
+
+    while(board.isRunning) {
+      board.printPlayerTurn
+      board.readMove
+      board.printField
+    }
+  }
+
+  private def getPlayer(): Player = {
+    print("Enter player name : ")
+    val playerName = scala.io.StdIn.readLine()
+
+    val defaultMarker = playerName(0)
+    print("Enter player sign (\"" + defaultMarker + "\"): ")
+    var playerMarkerInput = scala.io.StdIn.readLine()
+    var playerMarker = defaultMarker
+
+    if (playerMarkerInput.length != 0) {
+      playerMarker = playerMarkerInput(0)
+    }
+
+    new Player(playerName, playerMarker)
+  }
+}
+
 class Board(val player1: Player, val player2: Player) {
   private val N = "·" // Blank value to initialize board with
 
@@ -68,12 +101,5 @@ class Board(val player1: Player, val player2: Player) {
 }
 
 println
-// var board = new Board(new Player("Batman", 'B'), new Player("Superman", 'S'))
-var board = new Board(("Batman", 'B'), ("Superman", 'S'))
-board.printField
-
-while(board.isRunning) {
-  board.printPlayerTurn
-  board.readMove
-  board.printField
-}
+var game = new Game()
+game.start()
