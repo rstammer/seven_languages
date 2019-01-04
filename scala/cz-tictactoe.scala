@@ -3,7 +3,11 @@ class Player(val name: String, val marker: Char)
 class Board(val player1: Player, val player2: Player) {
   private val N = "·" // Blank value to initialize board with
 
-  // TODO: make sure both players have different `marker` values
+  private var moves = 0
+
+  val players = List[Player](player1, player2)
+
+  // FIXME: make sure both players have different `marker` values
 
   /**
    * Allows construction like so:
@@ -16,9 +20,11 @@ class Board(val player1: Player, val player2: Player) {
   var fields = Array.tabulate(3,3)( (x,y) => N )
 
   // Somewhat clunky way to flip the coin on who's gonna start the game?
-  private var _playerAtTurn = List[Player](player1, player2)(scala.util.Random.nextInt(2))
+  private var _playerAtTurn = players(scala.util.Random.nextInt(2))
 
-  def playerAtTurn = println("It's " + _playerAtTurn.name + "(" + _playerAtTurn.marker + ")'s turn.")
+  def playerAtTurn: Player = _playerAtTurn
+
+  def printPlayerTurn = println("It's " + _playerAtTurn.name + "(" + _playerAtTurn.marker + ")'s turn.")
 
   def printField(): Unit = {
     for(i <- 0 until 3) {
@@ -29,10 +35,29 @@ class Board(val player1: Player, val player2: Player) {
       println
     }
   }
+
+  def readMove(): Unit = {
+    print("Enter X coord: ")
+    val x = scala.io.StdIn.readInt()
+    print("Enter Y coord: ")
+    val y = scala.io.StdIn.readInt()
+    doMove(x-1 , y-1)
+  }
+
+  // FIXME: block selected field from being re-assigned
+  private def doMove(x: Int, y: Int) {
+    fields(x)(y) = playerAtTurn.marker.toString
+    moves += 1
+    _playerAtTurn = getNextPlayer
+  }
+
+  private def getNextPlayer(): Player = players.filter(_ != playerAtTurn)(0)
 }
 
 println
 // var board = new Board(new Player("Batman", 'B'), new Player("Superman", 'S'))
 var board = new Board(("Batman", 'B'), ("Superman", 'S'))
 board.printField
-board.playerAtTurn
+board.printPlayerTurn
+board.readMove
+board.printField
