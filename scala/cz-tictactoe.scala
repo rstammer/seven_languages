@@ -22,7 +22,7 @@ class Game() {
     print("Enter player name : ")
     val playerName = scala.io.StdIn.readLine()
 
-    val defaultMarker = playerName(0)
+    val defaultMarker = playerName.toUpperCase()(0)
     print("Enter player sign (\"" + defaultMarker + "\"): ")
     var playerMarkerInput = scala.io.StdIn.readLine()
     var playerMarker = defaultMarker
