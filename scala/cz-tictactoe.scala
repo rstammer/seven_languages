@@ -1,5 +1,7 @@
 class Player(val name: String, val marker: Char)
 
+// FIXME: add a `Game` class and stop handling player turns in `Board`
+
 class Board(val player1: Player, val player2: Player) {
   private val N = "·" // Blank value to initialize board with
 
@@ -26,6 +28,7 @@ class Board(val player1: Player, val player2: Player) {
 
   def printPlayerTurn = println("It's " + _playerAtTurn.name + "(" + _playerAtTurn.marker + ")'s turn.")
 
+  // FIXME: change to `override def toString(): String` and let `Game` draw it
   def printField(): Unit = {
     for(i <- 0 until 3) {
       for(j <- 0 until 3) {
@@ -35,6 +38,11 @@ class Board(val player1: Player, val player2: Player) {
       println
     }
   }
+
+  def isRunning(): Boolean = moves < 9 || hasWinner
+
+  // TODO: Implement me
+  def hasWinner(): Boolean = false
 
   def readMove(): Unit = {
     print("Enter X coord: ")
@@ -58,6 +66,9 @@ println
 // var board = new Board(new Player("Batman", 'B'), new Player("Superman", 'S'))
 var board = new Board(("Batman", 'B'), ("Superman", 'S'))
 board.printField
-board.printPlayerTurn
-board.readMove
-board.printField
+
+while(board.isRunning) {
+  board.printPlayerTurn
+  board.readMove
+  board.printField
+}
