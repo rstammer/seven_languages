@@ -85,7 +85,13 @@ class Board() {
 
   // FIXME: change to `override def toString(): String` and let `Game` draw it
   def printField(): Unit = {
+    println("  X → 1  2  3")
+    println("Y  ")
+    println("↓")
+    println
+
     for(i <- 0 until 3) {
+      print((i+1) + "    ")
       for(j <- 0 until 3) {
         print(" " + fields(j)(i) + " ")
       }
