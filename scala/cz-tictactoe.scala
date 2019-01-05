@@ -17,7 +17,7 @@ class Game() {
     // FIXME: make sure both players have different `marker` values
     val players = List[Player](player1, player2)
 
-    board.printField
+    print(board.toString)
 
     currentPlayer = getNextPlayer(players)
 
@@ -31,7 +31,7 @@ class Game() {
       }
 
       update(currentMove)
-      board.printField
+      print(board.toString)
       currentPlayer = getNextPlayer(players)
     }
   }
@@ -98,21 +98,21 @@ class Board() {
 
   var fields = Array.tabulate(3,3)( (x,y) => UNOCCUPIED )
 
-  // FIXME: change to `override def toString(): String` and let `Game` draw it
-  def printField(): Unit = {
-    println("  X → 1  2  3")
-    println("Y  ")
-    println("↓")
-    println
+  override def toString(): String = {
+    var board = 
+      "  X → 1  2  3\n" + 
+      "Y  \n" + 
+      "↓\n" + 
+      "\n"
 
     for(i <- 0 until 3) {
-      print((i+1) + "    ")
+      board += ((i+1) + "    ")
       for(j <- 0 until 3) {
-        print(" " + fields(j)(i) + " ")
+        board += (" " + fields(j)(i) + " ")
       }
-      println
-      println
+      board += "\n\n"
     }
+    board
   }
 
 }
