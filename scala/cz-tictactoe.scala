@@ -46,11 +46,26 @@ class Game() {
   }
 
   def readMove(): Move = {
-    print("Enter X coord: ")
-    val x = scala.io.StdIn.readInt() - 1
-    print("Enter Y coord: ")
-    val y = scala.io.StdIn.readInt() - 1
+    var x : Int = -1
+    var y : Int = -1
 
+    print("Enter X coord: ")
+    x = scala.io.StdIn.readInt() - 1
+
+    while (!(0 to 2 contains x)) {
+      println(Console.RED + "Your requested X coord value is out of bounds!" + Console.RESET)
+      print("Enter X coord: ")
+      x = scala.io.StdIn.readInt() - 1
+    }
+
+    print("Enter Y coord: ")
+    y = scala.io.StdIn.readInt() - 1
+
+    while (!(0 to 2 contains y)) {
+      println(Console.RED + "Your requested Y coord value is out of bounds!" + Console.RESET)
+      print("Enter Y coord: ")
+      y = scala.io.StdIn.readInt() - 1
+    }
     new Move(x, y, currentPlayer)
   }
 
