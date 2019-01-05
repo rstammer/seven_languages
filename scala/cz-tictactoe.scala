@@ -1,32 +1,87 @@
 class Player(val name: String, val marker: Char)
 
-// FIXME: add a `Game` class and stop handling player turns in `Board`
+class Move(val x: Int, val y: Int, val player: Player) {
+  def isValid(board: Board): Boolean = board.fields(x)(y) == board.UNOCCUPIED
+}
 
-class Board(val player1: Player, val player2: Player) {
-  private val N = "·" // Blank value to initialize board with
+class Game() {
+  var board = new Board()
 
   private var moves = 0
+  // TODO: Replace dummy player by nice native language construct solution
+  private var currentPlayer = new Player("", '-')
 
-  val players = List[Player](player1, player2)
+  def start() = {
+    val player1 = getPlayerData()
+    val player2 = getPlayerData()
+    // FIXME: make sure both players have different `marker` values
+    val players = List[Player](player1, player2)
 
-  // FIXME: make sure both players have different `marker` values
+    board.printField
 
-  /**
-   * Allows construction like so:
-   *    new Board(("John", 'X'), ("Jane", 'O'))
-   */
-  def this(player1: (String, Char), player2: (String, Char)) {
-    this(new Player(player1._1, player1._2), new Player(player2._1, player2._2))
+    currentPlayer = getNextPlayer(players)
+
+    while(isRunning) {
+      printPlayerTurn
+      var currentMove = readMove()
+
+      while (!currentMove.isValid(board)) {
+        println(Console.RED + "Field is already set by '" + board.fields(currentMove.x)(currentMove.y) + "'" + Console.RESET)
+        currentMove = readMove()
+      }
+
+      update(currentMove)
+      board.printField
+      currentPlayer = getNextPlayer(players)
+    }
   }
 
-  var fields = Array.tabulate(3,3)( (x,y) => N )
+  private def isRunning(): Boolean = moves < 9 || hasWinner
 
-  // Somewhat clunky way to flip the coin on who's gonna start the game?
-  private var _playerAtTurn = players(scala.util.Random.nextInt(2))
+  // TODO: Implement me
+  private def hasWinner(): Boolean = false
 
-  def playerAtTurn: Player = _playerAtTurn
+  private def printPlayerTurn = {
+    println("It's " + currentPlayer.name + "(" + currentPlayer.marker + ")'s turn.")
+  }
 
-  def printPlayerTurn = println("It's " + _playerAtTurn.name + "(" + _playerAtTurn.marker + ")'s turn.")
+  def readMove(): Move = {
+    print("Enter X coord: ")
+    val x = scala.io.StdIn.readInt() - 1
+    print("Enter Y coord: ")
+    val y = scala.io.StdIn.readInt() - 1
+
+    new Move(x, y, currentPlayer)
+  }
+
+  private def update(move: Move) {
+    board.fields(move.x)(move.y) = move.player.marker.toString
+    moves += 1
+  }
+
+  private def getNextPlayer(players: List[Player]): Player = players.filter(_ != currentPlayer)(0)
+
+  private def getPlayerData(): Player = {
+    print("Enter player name : ")
+    val playerName = scala.io.StdIn.readLine()
+
+    val defaultMarker = playerName.toUpperCase()(0)
+    print("Enter player sign (\"" + defaultMarker + "\"): ")
+    var playerMarkerInput = scala.io.StdIn.readLine()
+    var playerMarker = defaultMarker
+
+    if (playerMarkerInput.length != 0) {
+      playerMarker = playerMarkerInput(0)
+    }
+
+    new Player(playerName, playerMarker)
+  }
+}
+
+class Board() {
+  val UNOCCUPIED = "·" // Blank value to initialize board with
+
+  var fields = Array.tabulate(3,3)( (x,y) => UNOCCUPIED )
 
   // FIXME: change to `override def toString(): String` and let `Game` draw it
   def printField(): Unit = {
@@ -39,41 +94,7 @@ class Board(val player1: Player, val player2: Player) {
     }
   }
 
-  def isRunning(): Boolean = moves < 9 || hasWinner
-
-  // TODO: Implement me
-  def hasWinner(): Boolean = false
-
-  def readMove(): Unit = {
-    print("Enter X coord: ")
-    val x = scala.io.StdIn.readInt() - 1
-    print("Enter Y coord: ")
-    val y = scala.io.StdIn.readInt() - 1
-
-    if (fields(x)(y) != N) {
-      println(Console.RED + "Field is already set by '" + fields(x)(y) + "'" + Console.RESET)
-      readMove
-    } else {
-      doMove(x, y)
-    }
-  }
-
-  private def doMove(x: Int, y: Int) {
-    fields(x)(y) = playerAtTurn.marker.toString
-    moves += 1
-    _playerAtTurn = getNextPlayer
-  }
-
-  private def getNextPlayer(): Player = players.filter(_ != playerAtTurn)(0)
 }
 
-println
-// var board = new Board(new Player("Batman", 'B'), new Player("Superman", 'S'))
-var board = new Board(("Batman", 'B'), ("Superman", 'S'))
-board.printField
-
-while(board.isRunning) {
-  board.printPlayerTurn
-  board.readMove
-  board.printField
-}
+var game = new Game()
+game.start()
