@@ -17,7 +17,7 @@ class Game() {
     // FIXME: make sure both players have different `marker` values
     val players = List[Player](player1, player2)
 
-    board.printField
+    print(board)
 
     currentPlayer = getNextPlayer(players)
 
@@ -31,7 +31,7 @@ class Game() {
       }
 
       update(currentMove)
-      board.printField
+      print(board)
       currentPlayer = getNextPlayer(players)
     }
   }
@@ -46,11 +46,26 @@ class Game() {
   }
 
   def readMove(): Move = {
-    print("Enter X coord: ")
-    val x = scala.io.StdIn.readInt() - 1
-    print("Enter Y coord: ")
-    val y = scala.io.StdIn.readInt() - 1
+    var x : Int = -1
+    var y : Int = -1
 
+    print("Enter X coord: ")
+    x = scala.io.StdIn.readInt() - 1
+
+    while (!(0 to 2 contains x)) {
+      println(Console.RED + "Your requested X coord value is out of bounds!" + Console.RESET)
+      print("Enter X coord: ")
+      x = scala.io.StdIn.readInt() - 1
+    }
+
+    print("Enter Y coord: ")
+    y = scala.io.StdIn.readInt() - 1
+
+    while (!(0 to 2 contains y)) {
+      println(Console.RED + "Your requested Y coord value is out of bounds!" + Console.RESET)
+      print("Enter Y coord: ")
+      y = scala.io.StdIn.readInt() - 1
+    }
     new Move(x, y, currentPlayer)
   }
 
@@ -83,15 +98,21 @@ class Board() {
 
   var fields = Array.tabulate(3,3)( (x,y) => UNOCCUPIED )
 
-  // FIXME: change to `override def toString(): String` and let `Game` draw it
-  def printField(): Unit = {
+  override def toString(): String = {
+    var board = 
+      "  X → 1  2  3\n" + 
+      "Y  \n" + 
+      "↓\n" + 
+      "\n"
+
     for(i <- 0 until 3) {
+      board += ((i+1) + "    ")
       for(j <- 0 until 3) {
-        print(" " + fields(j)(i) + " ")
+        board += (" " + fields(j)(i) + " ")
       }
-      println
-      println
+      board += "\n\n"
     }
+    board
   }
 
 }
