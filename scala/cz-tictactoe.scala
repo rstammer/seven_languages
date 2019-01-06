@@ -17,7 +17,7 @@ class Game() {
     // FIXME: make sure both players have different `marker` values
     val players = List[Player](player1, player2)
 
-    print(board.toString)
+    print(board)
 
     currentPlayer = getNextPlayer(players)
 
@@ -31,7 +31,7 @@ class Game() {
       }
 
       update(currentMove)
-      print(board.toString)
+      print(board)
       currentPlayer = getNextPlayer(players)
     }
   }
