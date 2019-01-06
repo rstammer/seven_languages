@@ -9,4 +9,4 @@ our random code notebook.
 * Ruby
 * Io
 * [Prolog](https://github.com/neumanrq/seven_languages/tree/master/prolog)
-* Scala
+* [Scala](https://github.com/neumanrq/seven_languages/tree/master/scala)
