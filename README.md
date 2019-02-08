@@ -10,3 +10,4 @@ our random code notebook.
 * Io
 * [Prolog](https://github.com/neumanrq/seven_languages/tree/master/prolog)
 * [Scala](https://github.com/neumanrq/seven_languages/tree/master/scala)
+* [Erlang](https://github.com/neumanrq/seven_languages/blob/master/erlang)
