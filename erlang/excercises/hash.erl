@@ -9,4 +9,4 @@
 
 fetch([], _) -> [];
 fetch([{Key, Value} | _], Key) -> Value;
-fetch([{_, _}, Tail], Key) -> fetch(Tail, Key).
+fetch([{_, _} | Tail], Key) -> fetch(Tail, Key).
