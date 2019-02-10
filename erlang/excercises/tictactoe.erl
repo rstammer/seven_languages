@@ -20,14 +20,10 @@ diagonal_winner_row([
 
 diagonal_winner_row(_) -> false.
 
-horizontal_winner(Board) -> 
-  is_winner_row = fun(Row) -> 
-                      case Row of 
-                        [X, X, X] -> true;
-                        _         -> false
-                      end
-                  end,
-  lists:any(is_winner_row, Board).
+
+horizontal_winner([]) -> false;
+horizontal_winner([ [X, X, X] | _]) -> true;
+horizontal_winner([ [_, _, _] | Tail]) -> horizontal_winner(Tail).
 
 result(Board) -> 
   HorizontalWinner    = horizontal_winner(Board),
