@@ -1,40 +1,37 @@
 -module(tictactoe).
 -export([result/1]).
 
-%%% TODO: Recognize the "cat" case 🐱
+transpose([
+           [A, B, C],
+           [D, E, F],
+           [G, H, I]
+          ]) -> [
+                 [A, D, G],
+                 [B, E, H],
+                 [C, F, I]
+                ].
 
-result([
-        P, P, P,
-        _, _, _,
-        _, _, _
-       ]) -> {winner, P};
 
-result([
-        _, _, _,
-        P, P, P,
-        _, _, _
-       ]) -> {winner, P};
+diagonal_winner_row([
+                     [P, _, _],
+                     [_, P, _],
+                     [_, _, P]
+                    ]) -> true;
 
-result([
-        _, _, _,
-        _, _, _,
-        P, P, P
-       ]) -> {winner, P};
+diagonal_winner_row(_) -> false.
 
-result([
-        P, _, _,
-        _, P, _,
-        _, _, P
-       ]) -> {winner, P};
+horizontal_winner(Board) -> 
+  is_winner_row = fun(Row) -> 
+                      case Row of 
+                        [X, X, X] -> true;
+                        _         -> false
+                      end
+                  end,
+  lists:any(is_winner_row, Board).
 
-result([
-        _, _, P,
-        _, P, _,
-        P, _, _
-       ]) -> {winner, P};
-
-result([
-        _, _, _,
-        _, _, _,
-        _, _, _
-       ]) -> no_winner.
+result(Board) -> 
+  HorizontalWinner    = horizontal_winner(Board),
+  VerticalWinner      = horizontal_winner(transpose(Board)),
+  LeftDiagonalWinner  = diagonal_winner_row(Board),
+  RightDiagonalWinner = diagonal_winner_row(transpose(Board)),
+  HorizontalWinner or VerticalWinner or LeftDiagonalWinner or RightDiagonalWinner.
