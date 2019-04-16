@@ -1,5 +1,4 @@
-﻿
-module Day1 where
+﻿module Day1 where
   import Data.List
 
   -- Philosophical question:
