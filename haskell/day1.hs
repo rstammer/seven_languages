@@ -14,7 +14,7 @@
     isOdd x = mod x 2 /= 0
 
   reverseList [] = []
-  reverseList (x:xs) = (reverse xs) ++ [x]
+  reverseList (x:xs) = (reverseList xs) ++ [x]
 
   colorCombos colors = nubBy glue [(x,y) | x <- colors, y <- colors, x /= y] where
     glue x y = fst(x) == snd(y) && fst(y) == snd(x)
