@@ -27,9 +27,8 @@
                                                                                 georgia    <- colors,
                                                                                 mississipi <- colors,
                                                                                 tennessee  <- colors ]
-
-  mapColoring = filter allowed allPossibleColorings
-    where allowed (alabama, mississipi, georgia, tennessee, florida)
+  mapColorings = filter allowed allPossibleColorings
+    where allowed (alabama, florida, georgia, mississipi, tennessee)
             | mississipi == tennessee = False
             | mississipi == alabama   = False
             | alabama == tennessee    = False
