@@ -20,3 +20,22 @@
     glue x y = fst(x) == snd(y) && fst(y) == snd(x)
 
   multiplicationTable a b = [(x, y, x*y) | x <- [a..b], y <- [a..b]]
+
+  colors = ["red", "green", "blue"]
+  allPossibleColorings = [ (alabama, florida, georgia, mississipi, tennessee) | alabama    <- colors,
+                                                                                florida    <- colors,
+                                                                                georgia    <- colors,
+                                                                                mississipi <- colors,
+                                                                                tennessee  <- colors ]
+
+  mapColoring = filter allowed allPossibleColorings
+    where allowed (alabama, mississipi, georgia, tennessee, florida)
+            | mississipi == tennessee = False
+            | mississipi == alabama   = False
+            | alabama == tennessee    = False
+            | alabama == mississipi   = False
+            | alabama == georgia      = False
+            | alabama == florida      = False
+            | georgia == florida      = False
+            | georgia == tennessee    = False
+            | otherwise               = True
